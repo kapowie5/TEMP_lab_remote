@@ -1,6 +1,7 @@
 %% calibrate NN for FandT scan.
 clear
 clc
+close all
 FolderExp=pwd;
 % FolderExp='\\MEETPC-0239\Data\Fluorescentie\newSan_1007\front';
 cd(FolderExp)
@@ -221,7 +222,7 @@ rms_test=(sum(error_test.*error_test)/length(error_test)).^(0.5)
 % Plot
 % plotperf(tr)
 %%
-close all
+% close all
 N_scan=size(theta,1)/SamplingF;
 [sortTrain,idTrain]=sort(target_train);
 [sortTest,idTest]=sort(target_test);
@@ -247,7 +248,9 @@ error_T_test_av=T_av_test(:,2)-T_av_train(:,1);
 
 rms_train_av=(sum(error_T_train_av.*error_T_train_av)/length(error_T_train_av)).^(0.5);
 rms_test_av=(sum(error_T_test_av.*error_T_test_av)/length(error_T_test_av)).^(0.5);
-close all
+
+%%
+% close all
 figure(33)
 subplot(211)
 plot(target_train,error_train,'ob'); hold on
@@ -292,3 +295,6 @@ save error_T_train.txt error_T_train -ascii -tabs
 save error_T_test.txt error_T_test -ascii -tabs
 save error_T_trainAV.txt error_T_trainAV -ascii -tabs
 save error_T_testAV.txt error_T_testAV -ascii -tabs
+
+%%
+applyNN2SingleTest

@@ -20,7 +20,7 @@ for iTn=1:Tn;
     
     for iFn=1:Fn
         cd(FolderExp)
-        close all
+%         close all
         clear Time FWHM Ratio theta
         clear SpectPeak ExpSpect Exp_data Peak_WL ExpSpectNorm
         clear ExpDataIP ExpDataNorm ExpSpect PumpInteg PumpPeak
