@@ -1,0 +1,13 @@
+During the performed nn training: 
+Data matrix theta.nn contained 1250 rows (spectra) of 
+ input  columns 1 ... 3
+ output columns 4 ... 4.
+weight files: w1.nn w2.nn
+error convergence file: pimat.nn
+used configuration numbers: param.nn
+# training spectra: 1000
+max. # iterations: 35
+eff. # iterations: 36
+Network training started at 12.30. 5
+Network training ended at 12.30. 8
+Date: 21.10.2013
