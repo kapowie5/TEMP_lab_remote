@@ -7,7 +7,7 @@ FolderExp=pwd;
 cd(FolderExp)
 sampling=250;
 freq_scan=freq_log(0.05,2,15);
-T_scan=295:10:335;
+T_scan=300:1:312;
 F_scan=15:-1:1;
 theta0=[];
 for n1=1:length(T_scan)
@@ -15,26 +15,26 @@ for n1=1:length(T_scan)
         name0=['T',num2str(T_scan(n1)),'_',num2str(F_scan(n2)),'_calib','.txt'];
         name_calib{n1,n2}=name0;
     end
-    data0=load(['T',num2str(T_scan(n1)),'_calib','.txt']);
+    data0=load(['T',num2str(T_scan(n1)),'K_calib','.calib']);
     theta0=[theta0;data0];
 end
 Spectra_range=[150:750];%[150:750];
 save Spectra_range.mat Spectra_range
-Spectra=theta0(:,3:end);
-T_pt1000_all=theta0(:,1);
-Spectra_all=theta0(:,3:end);
+Spectra=theta0(:,5:end);
+T_pt1000_all=theta0(:,2);
+Spectra_all=theta0(:,5:end);
 Spectra_base=min(Spectra_all,[],2)*ones(1,size(Spectra_all,2));
 Spectra_all=Spectra_all-Spectra_base;
 WL800=load('WL800.txt');%% wavelengths of spectrometer
 [Tn,Fn]=size(name_calib);
 
 %% calculate peak intensity, integrated intensity,fwhm, emission maximum
-for ii=0:size(theta0,1)/sampling-1
-    range_1=(1:sampling)+ii*sampling;
-    theta_av(ii+1,:)=mean(theta0(range_1,:)); %
+for ii=0:size(theta0,2)/sampling-1
+    range_1=(2:sampling)+ii*sampling;
+    theta_av(ii+1,:)=mean(theta0(range_1,:)); % I've worked to this point
 end
 T_pt1000_av=theta_av(:,1);
-Spectra_av=theta_av(:,3:end);
+Spectra_av=theta_av(:,5:end);
 for isp=1:size(Spectra_av,1);
     [I_peak(isp,:),Peak_WL(isp,:)]=findpeak(WL800(Spectra_range),Spectra_av(isp,Spectra_range),30);
     I_integ(isp,:)=sum(Spectra_av(isp,Spectra_range));
