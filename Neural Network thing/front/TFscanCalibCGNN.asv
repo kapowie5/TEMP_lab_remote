@@ -224,7 +224,7 @@ rms_test=(sum(error_test.*error_test)/length(error_test)).^(0.5)
 % plotperf(tr)
 %%
 % close all
-N_scan=size(theta,1)/SamplingF;
+N_scan=flsize(theta,1)/SamplingF;
 [sortTrain,idTrain]=sort(target_train);
 [sortTest,idTest]=sort(target_test);
 T_av_train=ones(N_scan,2);
