@@ -12,6 +12,7 @@ F_scan=15:-1:1;
 theta0=[];
 for n1=1:length(T_scan)
     for n2=1:length(F_scan)
+        disp(T_scan(n1));
         name0=['T',num2str(T_scan(n1)),'_',num2str(F_scan(n2)),'_calib','.txt'];
         name_calib{n1,n2}=name0;
     end
@@ -223,7 +224,7 @@ rms_test=(sum(error_test.*error_test)/length(error_test)).^(0.5)
 % plotperf(tr)
 %%
 % close all
-N_scan=size(theta,1)/SamplingF;
+N_scan=floor(size(theta,1)/SamplingF);
 [sortTrain,idTrain]=sort(target_train);
 [sortTest,idTest]=sort(target_test);
 T_av_train=ones(N_scan,2);
