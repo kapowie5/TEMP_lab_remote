@@ -19,23 +19,22 @@ for n1=1:length(T_scan)
     theta0=[theta0;data0];
 end
 %making theta compatable with program
-extra0 =[theta0(:,1);theta0(:,4)];
-theta0 = horzcat(theta0(:,2:3),theta0(:,5:end));
+extra0 =[theta0(:,1);theta0(:,)]
 
 Spectra_range=[150:750];%[150:750];
 save Spectra_range.mat Spectra_range
-Spectra=theta0(:,3:end);
-T_pt1000_all=theta0(:,1);
-Spectra_all=theta0(:,3:end);
+Spectra=theta0(:,5:end);
+T_pt1000_all=theta0(:,2);
+Spectra_all=theta0(:,5:end);
 Spectra_base=min(Spectra_all,[],2)*ones(1,size(Spectra_all,2));
 Spectra_all=Spectra_all-Spectra_base;
 WL800=load('WL800.txt');%% wavelengths of spectrometer
 [Tn,Fn]=size(name_calib);
 
 %% calculate peak intensity, integrated intensity,fwhm, emission maximum
-for ii=0:size(theta0,1)/sampling-1
-    range_1=(1:sampling)+ii*sampling;
-    theta_av(ii+1,:)=mean(theta0(range_1,:)); 
+for ii=0:size(theta0,2)/sampling-1
+    range_1=(2:sampling)+ii*sampling;
+    theta_av(ii+1,:)=mean(theta0(range_1,:)); % I've worked to this point
 end
 T_pt1000_av=theta_av(:,1);
 Spectra_av=theta_av(:,5:end);
