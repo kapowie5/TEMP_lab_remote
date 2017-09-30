@@ -11,7 +11,7 @@ freq_scan=[0.2,0.5];
 T_scan=305;
 name_scan{1}='T305_DCAC';
 % name_scan{2}='T305_DCAC';
-WL800=load('WL800.txt');
+WL800=load('GreenSpectrometerWavelengths');
 % WL800=WaveRead;%% wavelengths of spectrometer
 [Tn,Fn]=size(name_scan);
 %%

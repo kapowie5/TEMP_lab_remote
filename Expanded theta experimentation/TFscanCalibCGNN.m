@@ -29,7 +29,7 @@ T_pt1000_all=theta0(:,1);
 Spectra_all=theta0(:,3:end);
 Spectra_base=min(Spectra_all,[],2)*ones(1,size(Spectra_all,2));
 Spectra_all=Spectra_all-Spectra_base;
-WL800=load('WL800.txt');%% wavelengths of spectrometer
+SPCWV=load('GreenSpectrometerWavelengths.txt');%% wavelengths of spectrometer
 [Tn,Fn]=size(name_calib);
 
 %% calculate peak intensity, integrated intensity,fwhm, emission maximum
@@ -40,18 +40,18 @@ end
 T_pt1000_av=theta_av(:,1);
 Spectra_av=theta_av(:,5:end);
 for isp=1:size(Spectra_av,1);
-    [I_peak(isp,:),Peak_WL(isp,:)]=findpeak(WL800(Spectra_range),Spectra_av(isp,Spectra_range),30);
+    [I_peak(isp,:),Peak_WL(isp,:)]=findpeak(SPCWV(Spectra_range),Spectra_av(isp,Spectra_range),30);
     I_integ(isp,:)=sum(Spectra_av(isp,Spectra_range));
     Ratio(isp,:)=I_integ(isp,:)/I_peak(isp,:);
-    FWHM(isp,:)=fwhm(WL800(Spectra_range),Spectra_av(isp,Spectra_range));
+    FWHM(isp,:)=fwhm(SPCWV(Spectra_range),Spectra_av(isp,Spectra_range));
     Spectra_norm_av(isp,:)=Spectra_av(isp,:)./I_peak(isp);
 end
 
 for isp=1:size(theta0,1)
-    [I_peak_all(isp,:),Peak_WL_all(isp,:)]=findpeak(WL800(Spectra_range),Spectra_all(isp,Spectra_range),30);
+    [I_peak_all(isp,:),Peak_WL_all(isp,:)]=findpeak(SPCWV(Spectra_range),Spectra_all(isp,Spectra_range),30);
     I_integ_all(isp,:)=sum(Spectra_all(isp,Spectra_range));
     Ratio_all(isp,:)=I_integ_all(isp,:)/I_peak_all(isp,:);
-    FWHM_all(isp,:)=fwhm(WL800(Spectra_range),Spectra_all(isp,Spectra_range));
+    FWHM_all(isp,:)=fwhm(SPCWV(Spectra_range),Spectra_all(isp,Spectra_range));
     Spectra_norm_all(isp,:)=Spectra_all(isp,:)./I_peak_all(isp);
 end
 theta_all=[T_pt1000_all,I_peak_all,I_integ_all,Ratio_all,FWHM_all,Peak_WL_all,Spectra_all(:,Spectra_range)];
@@ -65,7 +65,7 @@ box on
 grid on
 hold on
 
-plot(WL800(Spectra_range),Spectra_av(:,Spectra_range),'linewidth',2);
+plot(SPCWV(Spectra_range),Spectra_av(:,Spectra_range),'linewidth',2);
 xlabel('wavelength (nm)','fontsize',20)
 ylabel('intensity (counts)','fontsize',20)
 axis('tight') 
@@ -75,7 +75,7 @@ h12=figure(12);
 box on
 grid on
 hold on
-plot(WL800(Spectra_range),Spectra_norm_av(:,Spectra_range),'linewidth',2);
+plot(SPCWV(Spectra_range),Spectra_norm_av(:,Spectra_range),'linewidth',2);
 xlabel('wavelength (nm)','fontsize',20)
 ylabel('normalized intensity (a.u.)','fontsize',20)
 axis('tight') 
