@@ -12,7 +12,7 @@ F_scan=15:-1:1;
 theta0=[];
 for n1=1:length(T_scan)
     for n2=1:length(F_scan)
-        name0=['T',num2str(T_scan(n1)),'K_calib','.calib'];
+        name0=['T',num2str(T_scan(n1)),num2str(F_scan(n2)),'K_calib','.txt'];
         name_calib{n1,n2}=name0;
     end
     data0=load(['T',num2str(T_scan(n1)),'K_calib','.calib']);
@@ -216,6 +216,7 @@ load shift.nn
 load factor.nn
 thetam2=apply_NN(param,shift,factor,input_cg(:,1:end-1));
 T_cg(:,1)=target_T;T_cg(:,2)=output_T;T_cg(:,3)=error_T;
+
 %%
 error_train=output_train-target_train;
 error_test=output_test-target_test;
