@@ -2,8 +2,6 @@
 clear
 clc
 close all
-ISUREHOPETHISWORKS!
-OHBOYNEWSTUFF!
 FolderExp=pwd;
 % FolderExp='\\MEETPC-0239\Data\Fluorescentie\newSan_1007\front';
 cd(FolderExp)
