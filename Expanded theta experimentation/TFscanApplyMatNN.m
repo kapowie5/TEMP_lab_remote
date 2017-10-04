@@ -1,14 +1,14 @@
 %% apply NN to Exp data
 clear
 clc
-FolderExp='\\MEETPC-0239\Data\Fluorescentie\fre_t_f_285_335\mid_3mm2\SCAN20130926\3MM';
-FolderFig='\\MEETPC-0239\Data\Fluorescentie\fre_t_f_285_335\mid_3mm2\SCAN20130926\3MM\figure';
+FolderExp='C:\Users\colto\Desktop\research\TEMP_lab_home\Expanded theta experimentation';
+FolderFig='C:\Users\colto\Desktop\research\TEMP_lab_home\Expanded theta experimentation\figure';
 cd(FolderExp)
 sampling=50;
 freq_scan=freq_log(0.05,1,20);
 freq_scan=freq_scan(2:end);
 T_scan=305:10:305;
-F_scan=20:-1:1;
+F_scan=2:-1:1;
 theta0=[];
 theta1=[];
 for n1=1:length(T_scan)
@@ -122,7 +122,7 @@ for iTn=1:Tn;
         %% choose proper NN
         %         FolderNN='\\MEETPC-0239\Data\Fluorescentie\fre_t_f_285_335\front_1mm\SPNN';
         %         FolderNN='\\MEETPC-0239\Data\Fluorescentie\fre_t_f_285_335\mid_3mm2\SPNN';
-        FolderNN='\\MEETPC-0239\Data\Fluorescentie\fre_t_f_285_335\mid_3mm2\SPNN';
+        FolderNN='C:\Users\colto\Desktop\research\TEMP_lab_home\Expanded theta experimentation\SPNN';
         cd(FolderNN) %% NN based on normalized spectrum and peak wavelength
         load input_Q.mat
         input_train=theta(:,input_Q);
