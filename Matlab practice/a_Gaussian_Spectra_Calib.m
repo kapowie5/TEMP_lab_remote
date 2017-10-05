@@ -67,7 +67,7 @@ S_D     = 0;            %Slope for Baseline
 
 
 %% This section defines various variables for the simulation
-WL  = load('wl-3648.txt');    %Vector of length nWL, of the wavelengths that will be simulated
+WL  = load('GreenSpectrometerWavelengths.txt');    %Vector of length nWL, of the wavelengths that will be simulated
 WL_index= [1:length(WL)];
 nWL     = length(WL);
 for it=1:length(t)
