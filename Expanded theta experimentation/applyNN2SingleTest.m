@@ -8,7 +8,7 @@ FolderFig=FolderExp;
 cd(FolderExp)
 sampling=50;
 freq_scan=[0.2,0.5];
-T_scan=305;
+T_scan=300;
 name_scan{1}='T305_DCAC';
 % name_scan{2}='T305_DCAC';
 WL800=load('GreenSpectrometerWavelengths.txt');
