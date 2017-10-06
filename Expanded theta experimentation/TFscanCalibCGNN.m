@@ -16,7 +16,7 @@ for n1=1:length(T_scan)
         name_calib{n1,n2}=name0;
     end
     data0=load(['T',num2str(T_scan(n1)),'K_calib','.calib']);
-    theta0=[theta0;data0];
+    theta0=[theta0;data0];k,l
 end
 %making theta compatable with program
 extra0 =[theta0(:,1);theta0(:,4)];
