@@ -6,8 +6,8 @@ weight files: w1.nn w2.nn
 error convergence file: pimat.nn
 used configuration numbers: param.nn
 # training spectra: 2600
-max. # iterations: 50
-eff. # iterations: 51
-Network training started at 22.36.26
-Network training ended at 22.36.27
-Date:  5.10.2017
+max. # iterations: 100
+eff. # iterations: 101
+Network training started at 10.44.52
+Network training ended at 10.44.55
+Date:  6.10.2017

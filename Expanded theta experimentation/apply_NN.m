@@ -63,6 +63,7 @@ Y=theta(:,i3:i4)';
 for i=1:(i4-i3+1)
     Y(i,:)=factor(i)*Y(i,:)+shift(i);
 end;
+
 thetam=theta;
 spectrum=PHI(:,:);
 [rij,kolom]=size(PHI);
