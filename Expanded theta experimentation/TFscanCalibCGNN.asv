@@ -199,7 +199,7 @@ param([5,6])=[cg2,cg2];     % target colums
 param([7,8])=[cg2,cg2];     % output colums
 param(12)=50;               % iteration times
 param([13,14])=[cg1,size(input_cg,1)]; % test rows,from param 13 to 14
-param([15,16])=[3,1];       % hidden layers,output units
+param([15,16])=[4//calculate number to be raised by exponent,1];       % hidden layers,output units
 param(17)=1;       % norm
 save param.nn param -ascii -tabs
 
