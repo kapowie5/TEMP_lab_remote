@@ -5,7 +5,7 @@ cc=fix(clock);
 cc1=fix(clock);
 cc2=fix(clock);
 
-units=3;%=input('Give number of hidden units ');
+units=2;%=input('Give number of hidden units ');
 outunit=1;%=input('Press 1 for linear output unit, 2 for tangent hyperbolic ');
 norm=1;%=input('Press 1 to normalize signals ');
 red=0;%=input('Press 1 for extra signal size reduction ');

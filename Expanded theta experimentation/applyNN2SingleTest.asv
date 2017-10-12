@@ -3,7 +3,7 @@ clear
 clc
 
 % FolderExp='C:\Users\Troy\Dropbox\3 - Belgium Spider Silk\Programs\From Liwang\Neural Network thing\front\single test';
-FolderExp=pwd;
+FolderExp=[pwd,'\single test';];
 FolderFig=FolderExp;
 cd(FolderExp)
 sampling=50;
@@ -118,9 +118,9 @@ for iTn=1:Tn;
         %% choose proper NN
         %        FolderNNSP='\\MEETPC-0239\Data\Fluorescentie\newSan_1007\p1\SPNN';
 %         FolderNNIP='\\MEETPC-0239\Data\Fluorescentie\newSan_1007\p1\IPNN';
-        
-        FolderNNSP=pwd;
-        FolderNNIP=pwd;%,'\IPNN'];
+        cd ..\.
+        FolderNNSP=[pwd];
+        FolderNNIP=[pwd,'\IPNN'];
         cd(FolderNNIP) %% NN based on IP
         load input_Q.mat
         input_trainIP=theta(:,input_Q);
