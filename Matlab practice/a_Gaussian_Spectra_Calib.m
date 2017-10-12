@@ -76,7 +76,7 @@ cd([Folder.SpectraSaveParent,'\',str])
 dummy=[errorStr,'.txt']; dlmwrite(dummy,val);
     T0 = (iT-1)*2+T0_0;    
 %     Tinf    = T0 + T_Rise;
-                iT
+               % iT
     
 %     for iCalib = 1:10
         % Loop of calibration files
@@ -107,11 +107,11 @@ dummy=[errorStr,'.txt']; dlmwrite(dummy,val);
                     curr = pwd;
                     %Create Green and IR Reference, then add to Spectra
                     % MAYBE REMOVE?
-                    cd(orig);
-                    GrnI = find(WL<535 & WL>529);
-                    Spec_temp(1,:) = ((maketrap(WL_index,min(GrnI),min(GrnI)+2,max(GrnI)-2,max(GrnI))) * ((Ref(jt)+1)/2))*15000;% + uNoise;
-                    Spec(jt,:) = Spec(jt,:) + Spec_temp(1,:);                       
-                    cd(curr);
+                    %cd(orig);
+                    %GrnI = find(WL<535 & WL>529);
+                    %Spec_temp(1,:) = ((maketrap(WL_index,min(GrnI),min(GrnI)+2,max(GrnI)-2,max(GrnI))) * ((Ref(jt)+1)/2))*15000;% + uNoise;
+                    %Spec(jt,:) = Spec(jt,:) + Spec_temp(1,:);                       
+                    %cd(curr);
                     %Save new time vector, Temp, Resistance, and TC
                     tt(jt) = t(jt);
 %                 end
