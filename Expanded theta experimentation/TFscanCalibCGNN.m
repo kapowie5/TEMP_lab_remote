@@ -146,7 +146,8 @@ save([name,'_TempDepenSpecNorm.txt'],'TempDepenSpecNorm','-ascii','-tabs')
 
 %% train NN
 theta=load('theta_all_norm');
-theta=[theta(:,2:end),extra0,theta(:,1)];%% [I,P,Ratio,FWHM,PWL,Norm]
+theta=[theta(:,2:end),theta(:,1)];%% [I,P,Ratio,FWHM,PWL,Norm]
+
 theta=theta(1:end,:);%% [I,P,Ratio,FWHM,PWL,Norm]
 %%
 % input_Q=[1,2,5,round(linspace(6,606,60))];%%80
