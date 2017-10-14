@@ -124,6 +124,7 @@ for iTn=1:Tn;
         cd(FolderNNIP) %% NN based on IP
         load input_Q.mat
         input_trainIP=theta(:,input_Q);
+        
         load param.nn
         shiftt=load('shift.nn');
         factorr=load('factor.nn');

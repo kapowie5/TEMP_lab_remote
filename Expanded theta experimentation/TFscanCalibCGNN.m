@@ -39,6 +39,7 @@ for ii=0:size(theta0,1)/sampling-1
 end
 T_pt1000_av=theta_av(:,1);
 Spectra_av=theta_av(:,5:end);
+
 for isp=1:size(Spectra_av,1);
     [I_peak(isp,:),Peak_WL(isp,:)]=findpeak(SPCWV(Spectra_range),Spectra_av(isp,Spectra_range),30);
     I_integ(isp,:)=sum(Spectra_av(isp,Spectra_range));
