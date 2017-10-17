@@ -48,6 +48,7 @@ function [par]=nncalc(spectrum,sstring,nr,units,outunit,ndata)
     PHI0     = [PHI0;ones(1,N)];            % Augment PHI with a row containing ones
     y1       = [zeros(hidden,N);ones(1,N)]; % Hidden layer outputs
     y2       = zeros(outputs,N);            % Network output
+    
     h1 = w1*PHI0;
     y1(H_hidden,:) = pmntanh(h1(H_hidden,:));
     y1(L_hidden,:) = h1(L_hidden,:);    
