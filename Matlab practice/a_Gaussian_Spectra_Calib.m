@@ -33,7 +33,7 @@ orig = pwd;
 A_PI_0  = 70066;    %Intercept for Peak Intensity
 B_PWL_0 = 530.57;      %Intercept for Peak Wavelength
 C_FWHM_0= 12.51;        %Intercept for FWHM
-D_0     = 1841.6;        %Intercept for Baseline
+D_0     = 1500;        %Intercept for Baseline
 
 %Spectral Features Slopes - Loosely Based on Experimental Data
 S_A     = -155.1;     %Slope for Peak Intensity
