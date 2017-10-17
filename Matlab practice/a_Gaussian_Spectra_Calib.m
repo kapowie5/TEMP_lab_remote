@@ -70,7 +70,7 @@ mkdir(str);
 
 
 %% Simulation section
-D_0 = 2000;
+D_0 = 20000;
 for iT = 1:10
 cd([Folder.SpectraSaveParent,'\',str])
 dummy=[errorStr,'.txt']; dlmwrite(dummy,val);
