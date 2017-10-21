@@ -48,7 +48,7 @@ S_D     = 0;            %Slope for Baseline
 WL  = load('GreenSpectrometerWavelengths.txt');    %Vector of length nWL, of the wavelengths that will be simulated
 WL_index= [1:length(WL)];
 nWL     = length(WL);
-T0_0    = 300;      %Intial temperature of the simulation before heating
+T0_0    = 280;      %Intial temperature of the simulation before heating
 
 
 
@@ -71,7 +71,7 @@ mkdir(str);
 
 %% Simulation section
 D_0 = 1300;
-for iT = 1:10
+for iT = 1:25
 cd([Folder.SpectraSaveParent,'\',str])
 dummy=[errorStr,'.txt']; dlmwrite(dummy,val);
     T0 = (iT-1)*2+T0_0;    

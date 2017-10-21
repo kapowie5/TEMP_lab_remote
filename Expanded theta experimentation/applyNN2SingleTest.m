@@ -9,7 +9,7 @@ cd(FolderExp)
 sampling=50;
 freq_scan=[0.2,0.5];
 T_scan=300;
-name_scan{1}='T305_DCAC';
+name_scan{1}='apply';
 % name_scan{2}='T305_DCAC';
 WL800=load('GreenSpectrometerWavelengths.txt');
 % WL800=WaveRead;%% wavelengths of spectrometer
@@ -30,7 +30,11 @@ for iTn=1:Tn;
         clear Peak_WL SpectPeak3 T_out ExpData ExpDataNorm ExpDataNorm2 TimeDepen
         clear T_recon fft_T T_ACDC T_fit
         load Spectra_range
-        exp_data=load([name_scan{iTn,iFn},'.txt']);
+        exp_data = [];
+        for n1=1:16
+            expdata0=load([name_scan{iTn,iFn},num2str(n1),'.txt']);
+            exp_data = [exp_data;expdata0;];
+        end
         cd(FolderFig)
         name0=name_scan{iTn,iFn};
         [e1,e2]=size(exp_data);

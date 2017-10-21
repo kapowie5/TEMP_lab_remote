@@ -7,7 +7,7 @@ FolderExp=pwd;
 cd(FolderExp)
 sampling=250;
 freq_scan=freq_log(0.05,2,15);
-T_scan=300:1:312;
+T_scan=300:2:328;
 F_scan=15:-1:1;
 theta0=[];
 for n1=1:length(T_scan)
@@ -19,8 +19,7 @@ for n1=1:length(T_scan)
     theta0=[theta0;data0];
 end
 %making theta compatable with program
-extra0 =[theta0(:,1),theta0(:,4)];
-theta0 = horzcat(theta0(:,2:3),theta0(:,5:end));
+theta0 = horzcat(theta0(:,end),theta0(:,2:end-1));
 
 Spectra_range=[150:750];%[150:750];
 save Spectra_range.mat Spectra_range
