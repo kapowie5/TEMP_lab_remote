@@ -31,10 +31,11 @@ for iTn=1:Tn;
         clear T_recon fft_T T_ACDC T_fit
         load Spectra_range
         exp_data = [];
-        for n1=1:16
-            expdata0=load([name_scan{iTn,iFn},num2str(n1),'.txt']);
-            exp_data = [exp_data;expdata0;];
-        end
+       % for n1=1:16
+        %    expdata0=load([name_scan{iTn,iFn},num2str(n1),'.txt']);
+         %   exp_data = [exp_data;expdata0;];
+        %end
+        exp_data = load('May 24_01_T302K_Motor+00um-QD(40ms),SinMod1000_IR105_Vac_1Aver(DATA).txt');
         cd(FolderFig)
         name0=name_scan{iTn,iFn};
         [e1,e2]=size(exp_data);
