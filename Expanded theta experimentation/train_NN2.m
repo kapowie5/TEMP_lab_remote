@@ -14,12 +14,12 @@ stop_crit=1e-20;
 %i=input('Press 1 to load scaled file theta.nn, 2 to load file using scaling files, 3 to load theta0.nn ','s');
 theta=inputs;
 [N,kolommen]=size(theta);
-i1=1;
-i2=1;
-i3=2;
-i4=2;
-i5=2;
-i6=2;
+i1=round(param(3));
+i2=round(param(4));
+i3=round(param(5));
+i4=round(param(6));
+i5=round(param(7));
+i6=round(param(8));
 itr=round(N/2);
 maxiter=102;
 inprof='knik';
@@ -107,6 +107,7 @@ A=param;
         N=o;
         fprintf('matrix longer than expected: increased to N=%i \n',N);
     end;
+    
     q=[i1,i2,i3,i4,i5,i6];
     if (max(q)>p),
         fprintf('Matrix too large, please give new sizes \n');
@@ -145,6 +146,7 @@ A=param;
     end;
 end;
 %clc;
+
 fprintf('In the current configuration: \n');
 fprintf('Number of hidden units : %i\n',units);
 if outunit==1,
@@ -288,7 +290,7 @@ rc=0;
 % end
 
 %%%%%%%%%%%%%%%%NN training
-k=7
+k=7;
 if k==7
     fprintf('start NN training')
     % ----- Marquardt algorithm -----
@@ -337,7 +339,7 @@ if k==7
     end;
     fprintf('nn trainings are performed from parameter %i to %i\n',i4,i3);
     rr=1;
-    fprintf('randomize w1, w2 weigth matrices before each iteration');
+    fprintf('randomize w1, w2 weigth matrices before each iteration\n');
     rand('seed',0);
     w1         = rand(units,(i2-i1+2));  % weights to hidden layer
     w2         = rand(1,units+1);  % weights to output
@@ -570,6 +572,7 @@ if k==2
         drawnet(w1,w2,1e-9);
         title('Network Architecture');
         drawnow;
+        
         %pause;
     end
     

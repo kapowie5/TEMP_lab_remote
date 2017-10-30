@@ -7,7 +7,7 @@ FolderExp=pwd;
 cd(FolderExp)
 sampling=250;
 freq_scan=freq_log(0.05,2,15);
-T_scan=300:1:312;
+T_scan=300:2:328;
 F_scan=15:-1:1;
 theta0=[];
 for n1=1:length(T_scan)
@@ -19,8 +19,7 @@ for n1=1:length(T_scan)
     theta0=[theta0;data0];k,l
 end
 %making theta compatable with program
-extra0 =[theta0(:,1);theta0(:,4)];
-theta0 = horzcat(theta0(:,2:3),theta0(:,5:end));
+theta0 = horzcat(theta0(:,end),theta0(:,2:end-1));
 
 Spectra_range=[150:750];%[150:750];
 save Spectra_range.mat Spectra_range
@@ -39,6 +38,7 @@ for ii=0:size(theta0,1)/sampling-1
 end
 T_pt1000_av=theta_av(:,1);
 Spectra_av=theta_av(:,5:end);
+
 for isp=1:size(Spectra_av,1);
     [I_peak(isp,:),Peak_WL(isp,:)]=findpeak(SPCWV(Spectra_range),Spectra_av(isp,Spectra_range),30);
     I_integ(isp,:)=sum(Spectra_av(isp,Spectra_range));
@@ -146,10 +146,11 @@ save([name,'_TempDepenSpecNorm.txt'],'TempDepenSpecNorm','-ascii','-tabs')
 %% train NN
 theta=load('theta_all_norm');
 theta=[theta(:,2:end),theta(:,1)];%% [I,P,Ratio,FWHM,PWL,Norm]
+
 theta=theta(1:end,:);%% [I,P,Ratio,FWHM,PWL,Norm]
 %%
 % input_Q=[1,2,5,round(linspace(6,606,60))];%%80
-input_Q=[1:2];
+input_Q=[1:4];
 save input_Q.mat input_Q
 % load input_Q
 factor4train=0.8;
@@ -188,7 +189,7 @@ target_test=theta(test_Q,end);
 % save net.mat net
 
 %% train CG NN 
-input_cg=[input_train,target_train;input_test,target_test];
+input_cg=[input_train,target_train;input_test,target_test]; 
 target_T=input_cg(:,end);
 cg1=size(input_train,1);
 cg2=size(input_cg,2);
@@ -202,6 +203,7 @@ param([13,14])=[cg1,size(input_cg,1)]; % test rows,from param 13 to 14
 param([15,16])=[2,1];       % hidden layers,output units
 param(17)=1;       % norm
 save param.nn param -ascii -tabs
+
 thetam=train_NN2(param,input_cg);
 
 output_T=thetam(:,end);

@@ -48,7 +48,7 @@ S_D     = 0;            %Slope for Baseline
 WL  = load('GreenSpectrometerWavelengths.txt');    %Vector of length nWL, of the wavelengths that will be simulated
 WL_index= [1:length(WL)];
 nWL     = length(WL);
-T0_0    = 300;      %Intial temperature of the simulation before heating
+T0_0    = 280;      %Intial temperature of the simulation before heating
 
 
 
@@ -70,8 +70,8 @@ mkdir(str);
 
 
 %% Simulation section
-D_0 = 20000;
-for iT = 1:10
+D_0 = 1300;
+for iT = 1:25
 cd([Folder.SpectraSaveParent,'\',str])
 dummy=[errorStr,'.txt']; dlmwrite(dummy,val);
     T0 = (iT-1)*2+T0_0;    
@@ -97,7 +97,7 @@ dummy=[errorStr,'.txt']; dlmwrite(dummy,val);
                     A_PI    = (A_PI_0) + (S_A)*T(jt);
                     B_PWL   = (B_PWL_0) + (S_B)*T(jt);
                     C_FWHM  = (C_FWHM_0) + (S_C)*T(jt);
-                    D       = (D_0 ) + (S_D)*T(jt);     
+                    D       = (D_0) + (S_D)*T(jt);     
 
                     %create gaussian spectra
                     for kWL = 1:nWL
@@ -107,11 +107,11 @@ dummy=[errorStr,'.txt']; dlmwrite(dummy,val);
                     curr = pwd;
                     %Create Green and IR Reference, then add to Spectra
                     % MAYBE REMOVE?
-                    cd(orig);
-                    GrnI = find(WL<535 & WL>529);
-                    Spec_temp(1,:) = ((maketrap(WL_index,min(GrnI),min(GrnI)+2,max(GrnI)-2,max(GrnI))) * ((Ref(jt)+1)/2))*15000;% + uNoise;
-                    Spec(jt,:) = Spec(jt,:) + Spec_temp(1,:);                       
-                    cd(curr);
+                    %cd(orig);
+                    %GrnI = find(WL<535 & WL>529);
+                    %Spec_temp(1,:) = ((maketrap(WL_index,min(GrnI),min(GrnI)+2,max(GrnI)-2,max(GrnI))) * ((Ref(jt)+1)/2))*15000;% + uNoise;
+                    %Spec(jt,:) = Spec(jt,:) + Spec_temp(1,:);                       
+                    %cd(curr);
                     %Save new time vector, Temp, Resistance, and TC
                     tt(jt) = t(jt);
 %                 end

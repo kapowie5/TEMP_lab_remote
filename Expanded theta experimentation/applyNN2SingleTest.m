@@ -3,13 +3,13 @@ clear
 clc
 
 % FolderExp='C:\Users\Troy\Dropbox\3 - Belgium Spider Silk\Programs\From Liwang\Neural Network thing\front\single test';
-FolderExp=[pwd,'\single test';];
+FolderExp=pwd;
 FolderFig=FolderExp;
 cd(FolderExp)
 sampling=50;
 freq_scan=[0.2,0.5];
-T_scan=305;
-name_scan{1}='T305_DCAC';
+T_scan=300;
+name_scan{1}='apply';
 % name_scan{2}='T305_DCAC';
 WL800=load('GreenSpectrometerWavelengths.txt');
 % WL800=WaveRead;%% wavelengths of spectrometer
@@ -30,12 +30,17 @@ for iTn=1:Tn;
         clear Peak_WL SpectPeak3 T_out ExpData ExpDataNorm ExpDataNorm2 TimeDepen
         clear T_recon fft_T T_ACDC T_fit
         load Spectra_range
-        exp_data=load([name_scan{iTn,iFn},'.txt']);
+        exp_data = [];
+       % for n1=1:16
+        %    expdata0=load([name_scan{iTn,iFn},num2str(n1),'.txt']);
+         %   exp_data = [exp_data;expdata0;];
+        %end
+        exp_data = load('May 24_01_T302K_Motor+00um-QD(40ms),SinMod1000_IR105_Vac_1Aver(DATA).txt');
         cd(FolderFig)
         name0=name_scan{iTn,iFn};
         [e1,e2]=size(exp_data);
         s_input=Spectra_range+1;
-        PumpLaser=exp_data(:,55:110);
+        PumpLaser=exp_data(:,255:310);
         Time=exp_data(:,1)-exp_data(1,1);
         ExpSpect=exp_data(:,s_input+1);
         Spectra_base=min(ExpSpect,[],2)*ones(1,size(ExpSpect,2));
@@ -118,12 +123,13 @@ for iTn=1:Tn;
         %% choose proper NN
         %        FolderNNSP='\\MEETPC-0239\Data\Fluorescentie\newSan_1007\p1\SPNN';
 %         FolderNNIP='\\MEETPC-0239\Data\Fluorescentie\newSan_1007\p1\IPNN';
-        cd ..\.
-        FolderNNSP=[pwd,'\SPNN'];
-        FolderNNIP=[pwd,'\IPNN'];
+        
+        FolderNNSP=pwd;
+        FolderNNIP=pwd;%,'\IPNN'];
         cd(FolderNNIP) %% NN based on IP
         load input_Q.mat
         input_trainIP=theta(:,input_Q);
+        
         load param.nn
         shiftt=load('shift.nn');
         factorr=load('factor.nn');
