@@ -32,7 +32,7 @@ end
 %Spectral Features Intercepts - Based on Experimental Data
 A_PI_0  = 68800;    %Intercept for Peak Intensity
 B_PWL_0 = 609;      %Intercept for Peak Wavelength
-C_FWHM_0= 6.0;        %Intercept for FWHM
+C_FWHM_0= 9;        %Intercept for FWHM %higher = more compressed, slight upward shift
 D_0     = 1300;        %Intercept for Baseline
 
 %Spectral Features Slopes - Loosely Based on Experimental Data
