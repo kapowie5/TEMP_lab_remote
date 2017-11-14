@@ -7,7 +7,7 @@ FolderExp=pwd;
 cd(FolderExp)
 sampling=250;
 freq_scan=freq_log(0.05,2,15);
-T_scan=300:2:328;
+T_scan=280:2:326;
 F_scan=15:-1:1;
 theta0=[];
 for n1=1:length(T_scan)
