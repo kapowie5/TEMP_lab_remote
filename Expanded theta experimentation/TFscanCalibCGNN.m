@@ -7,19 +7,20 @@ FolderExp=pwd;
 cd(FolderExp)
 sampling=250;
 freq_scan=freq_log(0.05,2,15);
-T_scan=280:2:326;
+%T_scan=280:2:326;
 F_scan=15:-1:1;
 theta0=[];
-for n1=1:length(T_scan)
-    for n2=1:length(F_scan)
-        name0=['T',num2str(T_scan(n1)),'K_calib','.calib'];
-        name_calib{n1,n2}=name0;
-    end
-    data0=load(['T',num2str(T_scan(n1)),'K_calib','.calib']);
-    theta0=[theta0;data0];
-end
+%for n1=1:length(T_scan)
+ %   for n2=1:length(F_scan)
+  %      name0=['T',num2str(T_scan(n1)),'K_calib','.calib'];
+   %     name_calib{n1,n2}=name0;
+    %end
+    %data0=load(['T',num2str(T_scan(n1)),'K_calib','.calib']);
+    %theta0=[theta0;data0];
+%end
+theta0 = load('DD3.txt')
 %making theta compatable with program
-theta0 = horzcat(theta0(:,end),theta0(:,2:end-1));
+%theta0 = horzcat(theta0(:,end),theta0(:,2:end-1));
 
 Spectra_range=[150:750];%[150:750];
 save Spectra_range.mat Spectra_range
@@ -29,7 +30,7 @@ Spectra_all=theta0(:,3:end);
 Spectra_base=min(Spectra_all,[],2)*ones(1,size(Spectra_all,2));
 Spectra_all=Spectra_all-Spectra_base;
 SPCWV=load('GreenSpectrometerWavelengths.txt');%% wavelengths of spectrometer
-[Tn,Fn]=size(name_calib);
+%[Tn,Fn]=size(name_calib);
 
 %% calculate peak intensity, integrated intensity,fwhm, emission maximum
 for ii=0:size(theta0,1)/sampling-1
