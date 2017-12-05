@@ -18,9 +18,9 @@ theta0=[];
     %data0=load(['T',num2str(T_scan(n1)),'K_calib','.calib']);
     %theta0=[theta0;data0];
 %end
-theta0 = load('DD3.txt')
+theta0 = load('DD3.txt');
 %making theta compatable with program
-%theta0 = horzcat(theta0(:,end),theta0(:,2:end-1));
+theta0 = horzcat(theta0(:,end),theta0(:,2:end-6));
 
 Spectra_range=[150:750];%[150:750];
 save Spectra_range.mat Spectra_range
@@ -41,7 +41,7 @@ T_pt1000_av=theta_av(:,1);
 Spectra_av=theta_av(:,5:end);
 
 for isp=1:size(Spectra_av,1);
-    [I_peak(isp,:),Peak_WL(isp,:)]=findpeak(SPCWV(Spectra_range),Spectra_av(isp,Spectra_range),30);
+    [I_peak(isp,:),Peak_WL(isp,:)]=findpeak((Spectra_range),Spectra_av(isp,Spectra_range),30);
     I_integ(isp,:)=sum(Spectra_av(isp,Spectra_range));
     Ratio(isp,:)=I_integ(isp,:)/I_peak(isp,:);
     FWHM(isp,:)=fwhm(SPCWV(Spectra_range),Spectra_av(isp,Spectra_range));
