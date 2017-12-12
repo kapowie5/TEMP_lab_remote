@@ -5,7 +5,7 @@ close all
 FolderExp=pwd;
 % FolderExp='\\MEETPC-0239\Data\Fluorescentie\newSan_1007\front';
 cd(FolderExp)
-sampling=250;
+sampling=50;
 freq_scan=freq_log(0.05,2,15);
 %T_scan=280:2:326;
 F_scan=15:-1:1;
@@ -20,9 +20,9 @@ theta0=[];
 %end
 theta0 = load('DD3.txt');
 %making theta compatable with program
-theta0 = horzcat(theta0(:,end),theta0(:,2:end-6));
+theta0 = horzcat(theta0(:,end),theta0(:,2:end-1));
 
-Spectra_range=[150:750];%[150:750];
+Spectra_range=[150:1000];%[150:750];
 save Spectra_range.mat Spectra_range
 Spectra=theta0(:,3:end);
 T_pt1000_all=theta0(:,1);
@@ -44,7 +44,7 @@ for isp=1:size(Spectra_av,1);
     [I_peak(isp,:),Peak_WL(isp,:)]=findpeak((Spectra_range),Spectra_av(isp,Spectra_range),30);
     I_integ(isp,:)=sum(Spectra_av(isp,Spectra_range));
     Ratio(isp,:)=I_integ(isp,:)/I_peak(isp,:);
-    FWHM(isp,:)=fwhm(SPCWV(Spectra_range),Spectra_av(isp,Spectra_range));
+    FWHM(isp,:)=0;
     Spectra_norm_av(isp,:)=Spectra_av(isp,:)./I_peak(isp);
 end
 
@@ -52,7 +52,7 @@ for isp=1:size(theta0,1)
     [I_peak_all(isp,:),Peak_WL_all(isp,:)]=findpeak(SPCWV(Spectra_range),Spectra_all(isp,Spectra_range),30);
     I_integ_all(isp,:)=sum(Spectra_all(isp,Spectra_range));
     Ratio_all(isp,:)=I_integ_all(isp,:)/I_peak_all(isp,:);
-    FWHM_all(isp,:)=fwhm(SPCWV(Spectra_range),Spectra_all(isp,Spectra_range));
+    FWHM_all(isp,:)=0;
     Spectra_norm_all(isp,:)=Spectra_all(isp,:)./I_peak_all(isp);
 end
 theta_all=[T_pt1000_all,I_peak_all,I_integ_all,Ratio_all,FWHM_all,Peak_WL_all,Spectra_all(:,Spectra_range)];

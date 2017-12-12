@@ -13,6 +13,12 @@ end
 index=round(mean(IS(1:5)));
 indexL=index-c;
 indexR=index+c;
+if indexR>b
+    indexR = b;
+end
+if indexL < 1
+    indexL = 1;
+end
 SpecPart=Spec(indexL:indexR);
 wLPart=wL(indexL:indexR);
 [p_weight,S,MU]=polyfit(wLPart,SpecPart,3);
