@@ -5,7 +5,7 @@ close all
 FolderExp=pwd;
 % FolderExp='\\MEETPC-0239\Data\Fluorescentie\newSan_1007\front';
 cd(FolderExp)
-sampling=50;
+sampling=41;
 freq_scan=freq_log(0.05,2,15);
 %T_scan=280:2:326;
 F_scan=15:-1:1;
@@ -44,7 +44,7 @@ for isp=1:size(Spectra_av,1);
     [I_peak(isp,:),Peak_WL(isp,:)]=findpeak((Spectra_range),Spectra_av(isp,Spectra_range),30);
     I_integ(isp,:)=sum(Spectra_av(isp,Spectra_range));
     Ratio(isp,:)=I_integ(isp,:)/I_peak(isp,:);
-    FWHM(isp,:)=0;
+    FWHM(isp,:)=1;
     Spectra_norm_av(isp,:)=Spectra_av(isp,:)./I_peak(isp);
 end
 
@@ -52,7 +52,7 @@ for isp=1:size(theta0,1)
     [I_peak_all(isp,:),Peak_WL_all(isp,:)]=findpeak(SPCWV(Spectra_range),Spectra_all(isp,Spectra_range),30);
     I_integ_all(isp,:)=sum(Spectra_all(isp,Spectra_range));
     Ratio_all(isp,:)=I_integ_all(isp,:)/I_peak_all(isp,:);
-    FWHM_all(isp,:)=0;
+    FWHM_all(isp,:)=1;
     Spectra_norm_all(isp,:)=Spectra_all(isp,:)./I_peak_all(isp);
 end
 theta_all=[T_pt1000_all,I_peak_all,I_integ_all,Ratio_all,FWHM_all,Peak_WL_all,Spectra_all(:,Spectra_range)];
@@ -151,11 +151,11 @@ theta=[theta(:,2:end),theta(:,1)];%% [I,P,Ratio,FWHM,PWL,Norm]
 theta=theta(1:end,:);%% [I,P,Ratio,FWHM,PWL,Norm]
 %%
 % input_Q=[1,2,5,round(linspace(6,606,60))];%%80
-input_Q=[1:4];
+input_Q=[1,2,3];
 save input_Q.mat input_Q
 % load input_Q
 factor4train=0.8;
-SamplingF=250;
+SamplingF=41;
 train_Q=[];test_Q=[];
 % for itQ=1:size(theta,1)/SamplingF;
 %     train_Q=[train_Q,(itQ-1)*SamplingF+1:itQ*SamplingF-round((1-factor4train)*SamplingF)];

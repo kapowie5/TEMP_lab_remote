@@ -35,7 +35,7 @@ for iTn=1:Tn;
         %    expdata0=load([name_scan{iTn,iFn},num2str(n1),'.txt']);
          %   exp_data = [exp_data;expdata0;];
         %end
-        exp_data = load('Test4modifiedformatted.csv');
+        exp_data = load('DD3.txt');
         cd(FolderFig)
         name0=name_scan{iTn,iFn};
         [e1,e2]=size(exp_data);
