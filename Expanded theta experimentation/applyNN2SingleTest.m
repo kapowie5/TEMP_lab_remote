@@ -1,5 +1,6 @@
 %% apply NN to Exp data
-clear
+function applyNN2SingleTest(varargin)
+clear -regexp ?!varargin
 clc
 
 % FolderExp='C:\Users\Troy\Dropbox\3 - Belgium Spider Silk\Programs\From Liwang\Neural Network thing\front\single test';
@@ -35,7 +36,24 @@ for iTn=1:Tn;
         %    expdata0=load([name_scan{iTn,iFn},num2str(n1),'.txt']);
          %   exp_data = [exp_data;expdata0;];
         %end
-        exp_data = load('DD3.txt');
+        if nargin==0
+        exp_data = load('DD6.txt');
+        else
+            exp_data = varargin{1};
+        end
+        
+        h7=figure(7);grid on
+        ylabel('predicted temperature (K)','fontsize',15)
+        xlabel('Time (Sec)','Fontsize',15)
+        legend('IP NN','SP NN')
+        hold on
+        for i=1:size(exp_data,1)
+        curr =applyNN2SingleDatum(exp_data(i,:));
+        
+        plot(exp_data(i,1),curr,'.k');
+        end
+        hold off
+        exp_data = exp_data(2:end,3:end-5);
         cd(FolderFig)
         name0=name_scan{iTn,iFn};
         [e1,e2]=size(exp_data);
@@ -64,7 +82,7 @@ for iTn=1:Tn;
         for isize=1:length(Time);
             [SpectPeak(isize,:),Peak_WL(isize,:)]=findpeak(WL,ExpSpect(isize,:),30);
             Ratio(isize,:)=SpectInteg(isize,:)/SpectPeak(isize,:);
-            FWHM(isize,:)=fwhm(WL,ExpSpect(isize,:));
+            FWHM(isize,:)=1;
         end
         Norm_matrix=SpectPeak*ones(1,size(ExpSpect,2));
         ExpSpectNorm=ExpSpect./Norm_matrix;
@@ -157,7 +175,7 @@ for iTn=1:Tn;
         T_recon(:,1)=Time;T_recon(:,2)=PumpInteg;T_recon(:,3)=SpectInteg;
         T_recon(:,4)=SpectPeak;T_recon(:,5)=Peak_WL;T_recon(:,6)=FWHM;
         T_recon(:,7)=Ratio;T_recon(:,8)=output_expIP;T_recon(:,8)=output_expSP;
-        
+        sampleexp = sum(output_expIP(1000:1200))/201;
         txt_temperature_name=[name0,'_TempData'];
         save(txt_temperature_name,'T_recon','-ascii','-tabs');
         

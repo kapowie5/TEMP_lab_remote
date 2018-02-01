@@ -1,11 +1,12 @@
 %% calibrate NN for FandT scan.
-clear
+function TFscanCalibCGNN(varargin)
+clear -regexp ?!varargin
 clc
 close all
 FolderExp=pwd;
 % FolderExp='\\MEETPC-0239\Data\Fluorescentie\newSan_1007\front';
 cd(FolderExp)
-sampling=41;
+sampling=308;
 freq_scan=freq_log(0.05,2,15);
 %T_scan=280:2:326;
 F_scan=15:-1:1;
@@ -18,11 +19,17 @@ theta0=[];
     %data0=load(['T',num2str(T_scan(n1)),'K_calib','.calib']);
     %theta0=[theta0;data0];
 %end
-theta0 = load('DD3.txt');
+if nargin==0
+thetainitial = load('DD6.txt');
+arg1 = 2
+else 
+    thetainitial = varargin{1};
+    arg1=1
+end
 %making theta compatable with program
-theta0 = horzcat(theta0(:,end),theta0(:,2:end-1));
+theta0 = horzcat(thetainitial(2:end,2),thetainitial(2:end,4:end-5));
 
-Spectra_range=[150:1000];%[150:750];
+Spectra_range=[400:1200];%[150:750];
 save Spectra_range.mat Spectra_range
 Spectra=theta0(:,3:end);
 T_pt1000_all=theta0(:,1);
@@ -155,7 +162,7 @@ input_Q=[1,2,3];
 save input_Q.mat input_Q
 % load input_Q
 factor4train=0.8;
-SamplingF=41;
+SamplingF=sampling;
 train_Q=[];test_Q=[];
 % for itQ=1:size(theta,1)/SamplingF;
 %     train_Q=[train_Q,(itQ-1)*SamplingF+1:itQ*SamplingF-round((1-factor4train)*SamplingF)];
@@ -216,7 +223,7 @@ error_test=output_test-target_test;
 rms_train=(sum(error_train.*error_train)/length(error_train)).^(0.5)
 rms_test=(sum(error_test.*error_test)/length(error_test)).^(0.5)
 load shift.nn
-load factor.nn
+factor =    3.9145072e-02;
 thetam2=apply_NN(param,shift,factor,input_cg(:,1:end-1));
 T_cg(:,1)=target_T;T_cg(:,2)=output_T;T_cg(:,3)=error_T;
 %%
@@ -229,7 +236,7 @@ rms_test=(sum(error_test.*error_test)/length(error_test)).^(0.5)
 % plotperf(tr)
 %%
 % close all
-N_scan=size(theta,1)/SamplingF;
+N_scan=floor(size(theta,1)/SamplingF);
 [sortTrain,idTrain]=sort(target_train);
 [sortTest,idTest]=sort(target_test);
 T_av_train=ones(N_scan,2);
@@ -303,4 +310,5 @@ save error_T_trainAV.txt error_T_trainAV -ascii -tabs
 save error_T_testAV.txt error_T_testAV -ascii -tabs
 
 %%
-applyNN2SingleTest
+avetemp = sum(theta0(1000:1200,1))/201;
+applyNN2SingleTest(thetainitial)
