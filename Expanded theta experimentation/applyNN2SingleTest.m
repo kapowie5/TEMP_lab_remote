@@ -46,13 +46,7 @@ for iTn=1:Tn;
         ylabel('predicted temperature (K)','fontsize',15)
         xlabel('Time (Sec)','Fontsize',15)
         legend('IP NN','SP NN')
-        hold on
-        for i=1:size(exp_data,1)
-        curr =applyNN2SingleDatum(exp_data(i,:));
-        
-        plot(exp_data(i,1),curr,'.k');
-        end
-        hold off
+ 
         exp_data = exp_data(2:end,3:end-5);
         cd(FolderFig)
         name0=name_scan{iTn,iFn};
