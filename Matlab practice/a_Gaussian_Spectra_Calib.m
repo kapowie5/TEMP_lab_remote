@@ -15,7 +15,7 @@ if val < sum(uVectorNums)
     errorStr = 'uAll'
 end
 
-
+orig = pwd;
 
 %% This section defines linear relationships as a function of temperature for the follow spectral features
 %       -Peak Intensity (PI), Peak Wavelength (PWL), Full Width Half
@@ -30,15 +30,15 @@ end
 %       temperature, and T is temperature.
 
 %Spectral Features Intercepts - Based on Experimental Data
-A_PI_0  = 68800;    %Intercept for Peak Intensity
-B_PWL_0 = 602;      %Intercept for Peak Wavelength
-C_FWHM_0= 9;        %Intercept for FWHM
+A_PI_0  = 70066;    %Intercept for Peak Intensity
+B_PWL_0 = 530.57;      %Intercept for Peak Wavelength
+C_FWHM_0= 12.51;        %Intercept for FWHM
 D_0     = 1300;        %Intercept for Baseline
 
 %Spectral Features Slopes - Loosely Based on Experimental Data
-S_A     = -194*0.8;     %Slope for Peak Intensity
-S_B     = 0.1;          %Slope for Peak Wavelength
-S_C     = 0.1;          %Slope for FWHM
+S_A     = -155.1;     %Slope for Peak Intensity
+S_B     = 0.24459;          %Slope for Peak Wavelength
+S_C     = 0.29668;          %Slope for FWHM
 S_D     = 0;            %Slope for Baseline
 
 
@@ -48,7 +48,7 @@ S_D     = 0;            %Slope for Baseline
 WL  = load('GreenSpectrometerWavelengths.txt');    %Vector of length nWL, of the wavelengths that will be simulated
 WL_index= [1:length(WL)];
 nWL     = length(WL);
-T0_0    = 300;      %Intial temperature of the simulation before heating
+T0_0    = 280;      %Intial temperature of the simulation before heating
 
 
 
@@ -71,12 +71,12 @@ mkdir(str);
 
 %% Simulation section
 D_0 = 1300;
-for iT = 1:10
+for iT = 1:25
 cd([Folder.SpectraSaveParent,'\',str])
 dummy=[errorStr,'.txt']; dlmwrite(dummy,val);
     T0 = (iT-1)*2+T0_0;    
 %     Tinf    = T0 + T_Rise;
-                iT
+               % iT
     
 %     for iCalib = 1:10
         % Loop of calibration files
@@ -104,12 +104,14 @@ dummy=[errorStr,'.txt']; dlmwrite(dummy,val);
                         Spec(jt,kWL) = (A_PI*exp(- ((WL(kWL)-B_PWL).^2) *(4*log(2)) / (C_FWHM)^2))+((randn/16)*uSN) + D + randn*4;
                     end       
 
+                    curr = pwd;
                     %Create Green and IR Reference, then add to Spectra
                     % MAYBE REMOVE?
-                    GrnI = find(WL<535 & WL>529);
-                    Spec_temp(1,:) = ((maketrap(WL_index,min(GrnI),min(GrnI)+2,max(GrnI)-2,max(GrnI))) * ((Ref(jt)+1)/2))*15000;% + uNoise;
-                    Spec(jt,:) = Spec(jt,:) + Spec_temp(1,:);                       
-                    
+                    %cd(orig);
+                    %GrnI = find(WL<535 & WL>529);
+                    %Spec_temp(1,:) = ((maketrap(WL_index,min(GrnI),min(GrnI)+2,max(GrnI)-2,max(GrnI))) * ((Ref(jt)+1)/2))*15000;% + uNoise;
+                    %Spec(jt,:) = Spec(jt,:) + Spec_temp(1,:);                       
+                    %cd(curr);
                     %Save new time vector, Temp, Resistance, and TC
                     tt(jt) = t(jt);
 %                 end

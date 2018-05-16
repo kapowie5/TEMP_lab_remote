@@ -1,1 +1,0 @@
-For all of the folders (except for Calibration done in May), you shouldn't have to change the program.  For the Calibration done in May folder, the document titled 13_05_15_220-320_info.txt tells you which things to change.
