@@ -1,27 +1,35 @@
 %% calibrate NN for FandT scan.
-clear all
+function TFscanCalibCGNN(varargin)
+clear -regexp ?!varargin
 clc
 close all
 FolderExp=pwd;
 % FolderExp='\\MEETPC-0239\Data\Fluorescentie\newSan_1007\front';
 cd(FolderExp)
-sampling=250;
+sampling=308;
 freq_scan=freq_log(0.05,2,15);
-T_scan=300:2:328;
+%T_scan=280:2:326;
 F_scan=15:-1:1;
 theta0=[];
-for n1=1:length(T_scan)
-    for n2=1:length(F_scan)
-        name0=['T',num2str(T_scan(n1)),'K_calib','.calib'];
-        name_calib{n1,n2}=name0;
-    end
-    data0=load(['T',num2str(T_scan(n1)),'K_calib','.calib']);
-    theta0=[theta0;data0];
+%for n1=1:length(T_scan)
+ %   for n2=1:length(F_scan)
+  %      name0=['T',num2str(T_scan(n1)),'K_calib','.calib'];
+   %     name_calib{n1,n2}=name0;
+    %end
+    %data0=load(['T',num2str(T_scan(n1)),'K_calib','.calib']);
+    %theta0=[theta0;data0];
+%end
+if nargin==0
+thetainitial = load('DD6.txt');
+arg1 = 2
+else 
+    thetainitial = varargin{1};
+    arg1=1
 end
 %making theta compatable with program
-theta0 = horzcat(theta0(:,end),theta0(:,2:end-1));
+theta0 = horzcat(thetainitial(2:end,2),thetainitial(2:end,4:end-5));
 
-Spectra_range=[150:750];%[150:750];
+Spectra_range=[400:1200];%[150:750];
 save Spectra_range.mat Spectra_range
 Spectra=theta0(:,3:end);
 T_pt1000_all=theta0(:,1);
@@ -29,7 +37,7 @@ Spectra_all=theta0(:,3:end);
 Spectra_base=min(Spectra_all,[],2)*ones(1,size(Spectra_all,2));
 Spectra_all=Spectra_all-Spectra_base;
 SPCWV=load('GreenSpectrometerWavelengths.txt');%% wavelengths of spectrometer
-[Tn,Fn]=size(name_calib);
+%[Tn,Fn]=size(name_calib);
 
 %% calculate peak intensity, integrated intensity,fwhm, emission maximum
 for ii=0:size(theta0,1)/sampling-1
@@ -40,10 +48,10 @@ T_pt1000_av=theta_av(:,1);
 Spectra_av=theta_av(:,5:end);
 
 for isp=1:size(Spectra_av,1);
-    [I_peak(isp,:),Peak_WL(isp,:)]=findpeak(SPCWV(Spectra_range),Spectra_av(isp,Spectra_range),30);
+    [I_peak(isp,:),Peak_WL(isp,:)]=findpeak((Spectra_range),Spectra_av(isp,Spectra_range),30);
     I_integ(isp,:)=sum(Spectra_av(isp,Spectra_range));
     Ratio(isp,:)=I_integ(isp,:)/I_peak(isp,:);
-    FWHM(isp,:)=fwhm(SPCWV(Spectra_range),Spectra_av(isp,Spectra_range));
+    FWHM(isp,:)=1;
     Spectra_norm_av(isp,:)=Spectra_av(isp,:)./I_peak(isp);
 end
 
@@ -51,7 +59,7 @@ for isp=1:size(theta0,1)
     [I_peak_all(isp,:),Peak_WL_all(isp,:)]=findpeak(SPCWV(Spectra_range),Spectra_all(isp,Spectra_range),30);
     I_integ_all(isp,:)=sum(Spectra_all(isp,Spectra_range));
     Ratio_all(isp,:)=I_integ_all(isp,:)/I_peak_all(isp,:);
-    FWHM_all(isp,:)=fwhm(SPCWV(Spectra_range),Spectra_all(isp,Spectra_range));
+    FWHM_all(isp,:)=1;
     Spectra_norm_all(isp,:)=Spectra_all(isp,:)./I_peak_all(isp);
 end
 theta_all=[T_pt1000_all,I_peak_all,I_integ_all,Ratio_all,FWHM_all,Peak_WL_all,Spectra_all(:,Spectra_range)];
@@ -150,11 +158,11 @@ theta=[theta(:,2:end),theta(:,1)];%% [I,P,Ratio,FWHM,PWL,Norm]
 theta=theta(1:end,:);%% [I,P,Ratio,FWHM,PWL,Norm]
 %%
 % input_Q=[1,2,5,round(linspace(6,606,60))];%%80
-input_Q=[1:4];
+input_Q=[1,2,3];
 save input_Q.mat input_Q
 % load input_Q
 factor4train=0.8;
-SamplingF=250;
+SamplingF=sampling;
 train_Q=[];test_Q=[];
 % for itQ=1:size(theta,1)/SamplingF;
 %     train_Q=[train_Q,(itQ-1)*SamplingF+1:itQ*SamplingF-round((1-factor4train)*SamplingF)];
@@ -215,7 +223,7 @@ error_test=output_test-target_test;
 rms_train=(sum(error_train.*error_train)/length(error_train)).^(0.5)
 rms_test=(sum(error_test.*error_test)/length(error_test)).^(0.5)
 load shift.nn
-load factor.nn
+factor =    3.9145072e-02;
 thetam2=apply_NN(param,shift,factor,input_cg(:,1:end-1));
 T_cg(:,1)=target_T;T_cg(:,2)=output_T;T_cg(:,3)=error_T;
 %%
@@ -228,7 +236,7 @@ rms_test=(sum(error_test.*error_test)/length(error_test)).^(0.5)
 % plotperf(tr)
 %%
 % close all
-N_scan=size(theta,1)/SamplingF;
+N_scan=floor(size(theta,1)/SamplingF);
 [sortTrain,idTrain]=sort(target_train);
 [sortTest,idTest]=sort(target_test);
 T_av_train=ones(N_scan,2);
@@ -302,4 +310,5 @@ save error_T_trainAV.txt error_T_trainAV -ascii -tabs
 save error_T_testAV.txt error_T_testAV -ascii -tabs
 
 %%
-applyNN2SingleTest
+avetemp = sum(theta0(1000:1200,1))/201;
+applyNN2SingleTest(thetainitial)

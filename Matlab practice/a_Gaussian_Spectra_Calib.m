@@ -30,16 +30,17 @@ orig = pwd;
 %       temperature, and T is temperature.
 
 %Spectral Features Intercepts - Based on Experimental Data
-A_PI_0  = 70066;    %Intercept for Peak Intensity
-B_PWL_0 = 530.57;      %Intercept for Peak Wavelength
-C_FWHM_0= 12.51;        %Intercept for FWHM
+A_PI_0  = 68800;    %Intercept for Peak Intensity
+B_PWL_0 = 602;      %Intercept for Peak Wavelength
+C_FWHM_0= 9;        %Intercept for FWHM
 D_0     = 1300;        %Intercept for Baseline
 
 %Spectral Features Slopes - Loosely Based on Experimental Data
-S_A     = -155.1;     %Slope for Peak Intensity
-S_B     = 0.24459;          %Slope for Peak Wavelength
-S_C     = 0.29668;          %Slope for FWHM
+S_A     = -155.2;     %Slope for Peak Intensity
+S_B     = 0.1;          %Slope for Peak Wavelength
+S_C     = 0.1;          %Slope for FWHM
 S_D     = 0;            %Slope for Baseline
+
 
 
 
@@ -71,10 +72,10 @@ mkdir(str);
 
 %% Simulation section
 D_0 = 1300;
-for iT = 1:25
+for iT = 1:24
 cd([Folder.SpectraSaveParent,'\',str])
 dummy=[errorStr,'.txt']; dlmwrite(dummy,val);
-    T0 = (iT-1)*2+T0_0;    
+    T0 = (iT-1)*2 +T0_0;    
 %     Tinf    = T0 + T_Rise;
                % iT
     
