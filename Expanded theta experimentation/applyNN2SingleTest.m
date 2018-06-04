@@ -161,7 +161,7 @@ for iTn=1:Tn;
       
         cd(FolderFig)
         h7=figure(7);%% single NN plot
-        plot(Time,output_expIP,'.k',Time,output_expSP,'.r');grid on
+        plot(Time,output_expIP,'.k',Time,output_expSP,'.-r');grid on
         ylabel('predicted temperature (K)','fontsize',15)
         xlabel('Time (Sec)','Fontsize',15)
         legend('IP NN','SP NN')
