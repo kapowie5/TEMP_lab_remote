@@ -38,6 +38,7 @@ for iTn=1:Tn;
         %end
         if nargin==0
         exp_data = load('DD6.txt');
+        applyNN2SingleDatum(exp_data(2,:))
         else
             exp_data = varargin{1};
         end
