@@ -20,20 +20,30 @@ theta0=[];
     %theta0=[theta0;data0];
 %end
 if nargin==0
-thetainitial = load('DD6.txt');
+%thetainitial = load('DD7.txt');
+load('TempList');
+load('GreenList');
+load('BlueList');
+load('RedList');
+theta0(:,1)=[GreenList(1,:,30,30),GreenList(2,:,30,30),GreenList(3,:,30,30),GreenList(4,:,30,30),GreenList(5,:,30,30),GreenList(6,:,30,30)];
+theta0(:,2)=[BlueList(1,:,30,30),BlueList(2,:,30,30),BlueList(3,:,30,30),BlueList(4,:,30,30),BlueList(5,:,30,30),BlueList(6,:,30,30)];
+theta0(:,3)=[RedList(1,:,30,30),RedList(2,:,30,30),RedList(3,:,30,30),RedList(4,:,30,30),RedList(5,:,30,30),RedList(6,:,30,30)];
+theta0(:,4)=[TempList(1,:,30,30),TempList(2,:,30,30),TempList(3,:,30,30),TempList(4,:,30,30),TempList(5,:,30,30),TempList(6,:,30,30)];
 arg1 = 2
 else 
     thetainitial = varargin{1};
     arg1=1
 end
 %making theta compatable with program
-theta0 = horzcat(thetainitial(2:end,2),thetainitial(2:end,4:end-5));
-
+%theta0 = horzcat(thetainitial(2:end,3:end),thetainitial(2:end,2));
+%{
 Spectra_range=[400:1200];%[150:750];
 save Spectra_range.mat Spectra_range
 Spectra=theta0(:,3:end);
 T_pt1000_all=theta0(:,1);
 Spectra_all=theta0(:,3:end);
+Spectra_min = min(Spectra_all,[],2);
+Spectra_ones = ones(1,size(Spectra_all,2))
 Spectra_base=min(Spectra_all,[],2)*ones(1,size(Spectra_all,2));
 Spectra_all=Spectra_all-Spectra_base;
 SPCWV=load('GreenSpectrometerWavelengths.txt');%% wavelengths of spectrometer
@@ -45,7 +55,7 @@ for ii=0:size(theta0,1)/sampling-1
     theta_av(ii+1,:)=mean(theta0(range_1,:)); 
 end
 T_pt1000_av=theta_av(:,1);
-Spectra_av=theta_av(:,5:end);
+Spectra_av=theta_av(:,1:end);
 
 for isp=1:size(Spectra_av,1);
     [I_peak(isp,:),Peak_WL(isp,:)]=findpeak((Spectra_range),Spectra_av(isp,Spectra_range),30);
@@ -150,12 +160,12 @@ TempDepenSpec=Spectra_av';
 TempDepenSpecNorm=[T_pt1000_av,Spectra_norm_av]';
 save([name,'_TempDepenSpec.txt'],'TempDepenSpec','-ascii','-tabs')
 save([name,'_TempDepenSpecNorm.txt'],'TempDepenSpecNorm','-ascii','-tabs')
-
+%}
 %% train NN
-theta=load('theta_all_norm');
-theta=[theta(:,2:end),theta(:,1)];%% [I,P,Ratio,FWHM,PWL,Norm]
+theta=theta0;
+%theta=[theta(:,2:end),theta(:,1)];%% [I,P,Ratio,FWHM,PWL,Norm]
 
-theta=theta(1:end,:);%% [I,P,Ratio,FWHM,PWL,Norm]
+theta=theta(1:end,:);%% [I,P,Ratio,FWHM,PWL,Norm] temp should be last column
 %%
 % input_Q=[1,2,5,round(linspace(6,606,60))];%%80
 input_Q=[1,2,3];
@@ -223,7 +233,7 @@ error_test=output_test-target_test;
 rms_train=(sum(error_train.*error_train)/length(error_train)).^(0.5)
 rms_test=(sum(error_test.*error_test)/length(error_test)).^(0.5)
 load shift.nn
-factor =    3.9145072e-02;
+factor = .1855;
 thetam2=apply_NN(param,shift,factor,input_cg(:,1:end-1));
 T_cg(:,1)=target_T;T_cg(:,2)=output_T;T_cg(:,3)=error_T;
 %%
@@ -311,4 +321,23 @@ save error_T_testAV.txt error_T_testAV -ascii -tabs
 
 %%
 avetemp = sum(theta0(1000:1200,1))/201;
-applyNN2SingleTest(thetainitial)
+thetam2=apply_NN(param,shift,factor,input_cg(:,1:end-1));
+GreenList(1,:,15,4)
+for x=1:201
+    for y=1:121
+input_cg((((x*121-120)+y-1)*1500-1499):(((x*121-120)+y-1)*1500),1)=[GreenList(1,:,x,y),GreenList(2,:,x,y),GreenList(3,:,x,y),GreenList(4,:,x,y),GreenList(5,:,x,y),GreenList(6,:,x,y)];
+input_cg((((x*121-120)+y-1)*1500-1499):(((x*121-120)+y-1)*1500),2)=[BlueList(1,:,x,y),BlueList(2,:,x,y),BlueList(3,:,x,y),BlueList(4,:,x,y),BlueList(5,:,x,y),BlueList(6,:,x,y)];
+input_cg((((x*121-120)+y-1)*1500-1499):(((x*121-120)+y-1)*1500),3)=[RedList(1,:,x,y),RedList(2,:,x,y),RedList(3,:,x,y),RedList(4,:,x,y),RedList(5,:,x,y),RedList(6,:,x,y)];
+input_cg((((x*121-120)+y-1)*1500-1499):(((x*121-120)+y-1)*1500),4)=[TempList(1,:,x,y),TempList(2,:,x,y),TempList(3,:,x,y),TempList(4,:,x,y),TempList(5,:,x,y),TempList(6,:,x,y)];
+    end
+end
+GreenList(1,:,15,3)
+thetam2=apply_NN(param,shift,factor,input_cg(:,1:end-1));
+total =0;
+for i=1:36481500
+    total = total + ((thetam2(i,4)-input_cg(i,4))^2);
+end
+total = total/36481500;
+total = sqrt(total);
+total = total;
+%applyNN2SingleTest(thetainitial)

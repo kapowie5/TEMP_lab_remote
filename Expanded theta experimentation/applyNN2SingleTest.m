@@ -37,7 +37,7 @@ for iTn=1:Tn;
          %   exp_data = [exp_data;expdata0;];
         %end
         if nargin==0
-        exp_data = load('DD6.txt');
+        exp_data = load('DD7.txt');
         applyNN2SingleDatum(exp_data(2,:))
         else
             exp_data = varargin{1};
