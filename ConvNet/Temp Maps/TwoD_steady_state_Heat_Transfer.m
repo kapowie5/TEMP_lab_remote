@@ -66,7 +66,7 @@ I2 = uint16(I);
 imwrite(I2, '16bit3.png', 'BitDepth',16);
 
 figure;
-contour(y,x,True_Temp)
+contourf(y,x,True_Temp)
 
 figure;
 contour(y,x,I)
