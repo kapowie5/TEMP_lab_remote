@@ -1,5 +1,6 @@
 clear all
-% close all
+close all
+fsize = 16;
 
 %Vary These temperatures to make different images
 T1 = 290; %Top and bottom temperatures (K)
@@ -55,10 +56,17 @@ True_Temp(:,:) = theta * (T2-T1) + T1;
 
 
 %%
-
+fsize = 16;
 figure;
- contourf(True_Temp)
- colorbar 
+ contourf(True_Temp);
+ h = colorbar; set(get(h,'label'),'string','Temp (K)','FontWeight','bold','FontSize',fsize);
+ set(gca,'FontWeight','bold','FontSize',fsize,'XTickLabel',{},'YTickLabel',{}); 
+ saveas(gcf,'Temp Map - Temps.fig')
+ 
+figure;
+ contour(True_Temp);colormap(hot)
+ h = colorbar; set(get(h,'label'),'string','Temp (K)','FontWeight','bold','FontSize',fsize);
+ set(gca,'FontWeight','bold','FontSize',fsize,'XTickLabel',{},'YTickLabel',{});
  
 
 
@@ -88,16 +96,21 @@ Ired    = uint16(m(1,5)*True_Temp + m(2,5));
 %%
 % close all
 imBlue = Izero; imBlue(:,:,3) = Iblue*20;
-imGreen = Izero; imGreen(:,:,2) = Igreen;
-imYellow = Izero; imYellow(:,:,1) = 2^16;       imYellow(:,:,2) = 2^16;     imYellow(:,:,3) = Iyellow*3;
-imOrange = Izero; imOrange(:,:,1) = 2^16;       imOrange(:,:,2) = Iorange;
-imRed = Izero; imRed(:,:,1) = Ired;
+imGreen = Izero; imGreen(:,:,2) = Igreen*2;
+imYellow = Izero; imYellow(:,:,1) = 204*256;       imYellow(:,:,2) = 204*256;     imYellow(:,:,3) = Iyellow/1.5;
+imOrange = Izero; imOrange(:,:,1) = 2^16;       imOrange(:,:,2) = Iorange/2;
+imRed = Izero; imRed(:,:,1) = Ired*2;
 
 figure;imshow(imBlue)
+ saveas(gcf,'Temp Map - Blue.fig')
 figure;imshow(imGreen)
+ saveas(gcf,'Temp Map - Green.fig')
 figure;imshow(imYellow)
+ saveas(gcf,'Temp Map - Yellow.fig')
 figure;imshow(imOrange)
+ saveas(gcf,'Temp Map - Orange.fig')
 figure;imshow(imRed)
+ saveas(gcf,'Temp Map - Red.fig')
 
 % imViolet = Izero; imOrange(:,:,1) = Iorange;    imOrange(:,:,3) = Iorange;
 % figure;imshow(imViolet)

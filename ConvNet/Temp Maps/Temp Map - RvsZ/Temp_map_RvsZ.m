@@ -35,18 +35,21 @@ plot(z,T(1,:))
 
 figure;
  contourf(z,r,T)
- colorbar 
  
  %%
  clear r_full
+ fsize = 16;
 True_Temp = [flipud(T);T(2:end,:)];
 r_full = [fliplr(r),r(2:end)*-1];
 
 
 
 figure;
- contourf(z,r_full,True_Temp)
- colorbar 
+ contourf(z,r_full,True_Temp) 
+ h = colorbar; set(get(h,'label'),'string','Temp (K)','FontWeight','bold','FontSize',fsize);
+ set(gca,'FontWeight','bold','FontSize',fsize,'XTickLabel',{},'YTickLabel',{}); 
+ saveas(gcf,'Temp Map - Temps (RvsZ).fig')
+print('Temp Map - Temps (RvsZ)','-dpng','-r300')
 %%
 % d_theta = 360/nr;
 % theta  = [1:d_theta:360];
@@ -77,11 +80,11 @@ Iorange = uint16(m(1,4)*True_Temp + m(2,4));
 Ired    = uint16(m(1,5)*True_Temp + m(2,5));
 
 %%
-% close all
+close all
 imBlue = Izero; imBlue(:,:,3) = Iblue*20;
 imGreen = Izero; imGreen(:,:,2) = Igreen;
-imYellow = Izero; imYellow(:,:,1) = 2^16;       imYellow(:,:,2) = 2^16;     imYellow(:,:,3) = Iyellow*3;
-imOrange = Izero; imOrange(:,:,1) = 2^16;       imOrange(:,:,2) = Iorange;
+imYellow = Izero; imYellow(:,:,1) = 204*256;       imYellow(:,:,2) = 204*256;     imYellow(:,:,3) = Iyellow/1.5;
+imOrange = Izero; imOrange(:,:,1) = 2^16;       imOrange(:,:,2) = Iorange/2;
 imRed = Izero; imRed(:,:,1) = Ired/1.5;
 
 figure;imshow(imBlue)

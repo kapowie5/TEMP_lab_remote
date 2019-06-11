@@ -49,7 +49,11 @@ Z = griddata(x,y,z,X,Y);
 %create contour plot
 figure;
 contourf(X,Y,griddata(x,y,z,X,Y));
-colorbar 
+ h = colorbar; set(get(h,'label'),'string','Temp (K)','FontWeight','bold','FontSize',fsize);
+ set(gca,'FontWeight','bold','FontSize',fsize,'XTickLabel',{},'YTickLabel',{}); 
+ saveas(gcf,'Temp Map - Temps (Circles).fig')
+print('Temp Map - Temps (Circles)','-dpng','-r300')
+
 True_Temp = Z;
 %%
 % d_theta = 360/nr;

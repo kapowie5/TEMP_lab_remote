@@ -46,11 +46,22 @@ ny = 196;
 [X,Y] = meshgrid(linspace(min(x),max(x),nx), linspace(min(y),max(y),ny));
 Z = griddata(x,y,z,X,Y);
 
+%To get it back to the right 290-320 K temp scale
+b=max(max(Z));a=min(min(Z));c=290;d=320;
+% for length(x)
+Ztest = c +(d-c)/(b-a)*(Z-a);
+
+True_Temp = Ztest;
+
 %create contour plot
 figure;
-contourf(X,Y,griddata(x,y,z,X,Y));
-colorbar 
-True_Temp = Z;
+contourf(X,Y,True_Temp);
+% contourf(X,Y,griddata(x,y,z,X,Y));   Stable version
+ h = colorbar; set(get(h,'label'),'string','Temp (K)','FontWeight','bold','FontSize',fsize);
+ set(gca,'FontWeight','bold','FontSize',fsize,'XTickLabel',{},'YTickLabel',{}); 
+ saveas(gcf,'Temp Map - Temps (Circles).fig')
+print('Temp Map - Temps (Circles)','-dpng','-r300')
+
 %%
 % d_theta = 360/nr;
 % theta  = [1:d_theta:360];
