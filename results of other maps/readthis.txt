@@ -1,0 +1,3 @@
+to get the per pixel RSME, divide the displayed RSME by 3600 (each was using 60x60 subimages)
+
+for each map, a training set and a validation set were generated and used, one full image each.  However, I suspect that these sets were identical, as I was unable to find any noise generation or other random elements within the map generation programs.  
