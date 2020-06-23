@@ -22,7 +22,8 @@ for i_z = 1:length(z)
             term2(k) = besseli(0,(lambda(k)*r(i_r)))*sin(lambda(k)*z(i_z));
             sum = sum + a(k)*term2(k);
         end
-        T(i_r,i_z) = T0 + (q*L^2/(2*k_prop))*(2*(z(i_z)/L) - (z(i_z)/L)^2) + sum;
+        T_clean(i_r,i_z) = T0 + (q*L^2/(2*k_prop))*(2*(z(i_z)/L) - (z(i_z)/L)^2) + sum; 
+        T(i_r,i_z) = T_clean(i_r,i_z) + normrnd(0,0.1);
     end
 end
 
@@ -39,9 +40,9 @@ figure;
  %%
  clear r_full
  fsize = 16;
-True_Temp = [flipud(T);T(2:end,:)];
+Temp_Dirty = [flipud(T);T(2:end,:)];
+True_Temp = [flipud(T_clean);T_clean(2:end,:)];
 r_full = [fliplr(r),r(2:end)*-1];
-
 
 
 figure;
@@ -49,6 +50,13 @@ figure;
  h = colorbar; set(get(h,'label'),'string','Temp (K)','FontWeight','bold','FontSize',fsize);
  set(gca,'FontWeight','bold','FontSize',fsize,'XTickLabel',{},'YTickLabel',{}); 
  saveas(gcf,'Temp Map - Temps (RvsZ).fig')
+print('Temp Map - Temps (RvsZ)','-dpng','-r300')
+
+figure;
+ contourf(z,r_full,Temp_Dirty) 
+ h = colorbar; set(get(h,'label'),'string','Temp (K)','FontWeight','bold','FontSize',fsize);
+ set(gca,'FontWeight','bold','FontSize',fsize,'XTickLabel',{},'YTickLabel',{}); 
+ saveas(gcf,'Temp Map (noisy) - Temps (RvsZ).fig')
 print('Temp Map - Temps (RvsZ)','-dpng','-r300')
 %%
 % d_theta = 360/nr;
@@ -72,26 +80,37 @@ m =     [-8.24	-54.03	-210.27	-272.26	-66.21 ;
 % m =     [-61.78	-405.22	-1577.00	-2041.90	-496.58 ;
 %         19213.00	132276.00	517539.07	673575.00	166133.00];
 
-Izero   = uint16(zeros([size(True_Temp),3]));
-Iblue   = uint16(m(1,1)*True_Temp + m(2,1));
-Igreen  = uint16(m(1,2)*True_Temp + m(2,2));
-Iyellow = uint16(m(1,3)*True_Temp + m(2,3));
-Iorange = uint16(m(1,4)*True_Temp + m(2,4));
-Ired    = uint16(m(1,5)*True_Temp + m(2,5));
+Izero   = uint16(zeros([size(Temp_Dirty),3]));
+Iblue   = uint16(m(1,1)*Temp_Dirty + m(2,1));
+Igreen  = uint16(m(1,2)*Temp_Dirty + m(2,2));
+Iyellow = uint16(m(1,3)*Temp_Dirty + m(2,3));
+Iorange = uint16(m(1,4)*Temp_Dirty + m(2,4));
+Ired    = uint16(m(1,5)*Temp_Dirty + m(2,5));
 
 %%
-close all
-imBlue = Izero; imBlue(:,:,3) = Iblue*20;
-imGreen = Izero; imGreen(:,:,2) = Igreen;
-imYellow = Izero; imYellow(:,:,1) = 204*256;       imYellow(:,:,2) = 204*256;     imYellow(:,:,3) = Iyellow/1.5;
-imOrange = Izero; imOrange(:,:,1) = 2^16;       imOrange(:,:,2) = Iorange/2;
-imRed = Izero; imRed(:,:,1) = Ired/1.5;
 
-figure;imshow(imBlue)
-figure;imshow(imGreen)
-figure;imshow(imYellow)
-figure;imshow(imOrange)
-figure;imshow(imRed)
+Red_vec=Ired(:);
+Orange_vec=Iorange(:);
+Yellow_vec=Iyellow(:);
+Green_vec=Igreen(:);
+Blue_vec=Iblue(:);
+T_clean_vec=True_Temp(:);
+T_dirty_vec=Temp_Dirty(:);
+figure;plot(Red_vec,T_clean_vec)
+
+% %%
+% % close all
+% imBlue = Izero; imBlue(:,:,3) = Iblue*20;
+% imGreen = Izero; imGreen(:,:,2) = Igreen;
+% imYellow = Izero; imYellow(:,:,1) = 204*256;       imYellow(:,:,2) = 204*256;     imYellow(:,:,3) = Iyellow/1.5;
+% imOrange = Izero; imOrange(:,:,1) = 2^16;       imOrange(:,:,2) = Iorange/2;
+% imRed = Izero; imRed(:,:,1) = Ired/1.5;
+% 
+% figure;imshow(imBlue)
+% figure;imshow(imGreen)
+% figure;imshow(imYellow)
+% figure;imshow(imOrange)
+% figure;imshow(imRed)
 
 % imViolet = Izero; imOrange(:,:,1) = Iorange;    imOrange(:,:,3) = Iorange;
 % figure;imshow(imViolet)
